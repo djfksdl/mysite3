@@ -53,7 +53,7 @@
 	
 				<div id="user">
 					<div id="modifyForm">
-						<form action="/mysite3/main" method="">
+						<form action="/mysite3/user" method="">
 							<input type="text" name="no" value="<%=authUser.getNo()%>">
 							<input type="text" name="id" value="<%=userVo.getId()%>">
 							<!-- 아이디 -->
@@ -76,7 +76,6 @@
 							<!-- //나이 -->
 							<div class="form-group">
 								<span class="form-text">성별</span> 
-								
 								<label for="rdo-male">남</label> 
 								<input type="radio" id="rdo-male" name="gender" value="male" checked="checked"> 
 								
@@ -89,7 +88,7 @@
 							<div class="button-area">
 								<button type="submit" id="btn-submit">회원정보수정</button>
 							</div>
-							
+							<input type="text" name="action" value="modify"> 
 						</form>
 					
 					

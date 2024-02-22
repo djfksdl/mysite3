@@ -148,24 +148,30 @@ public class UserController extends HttpServlet {
 			HttpSession session = request.getSession();
 //			System.out.println(session);
 			UserVo num = (UserVo)session.getAttribute("authUser") ;
+//			UserVo vo = (UserVo)session.getAttribute("userVo");
 			int no = num.getNo();
-			String name = num.getName();
-			UserVo vo = (UserVo)session.getAttribute("userVo");
-//			String id = request.getParameter("id");
-//			String pw = request.getParameter("pw");
-//			String gender = request.getParameter("gender");
-			String id= vo.getId();
-			String pw = vo.getPw();
-			String gender = vo.getGender();
+//			String name = num.getName();
+//			String id= vo.getId();
+//			String pw = vo.getPw();
+//			String gender = vo.getGender();
+//			String id = request.getParameter("id"); 어차피 안바꾸니까
+			String pw = request.getParameter("pw");
+			String name = request.getParameter("name");
+			String gender = request.getParameter("gender");
 			
-			//vo로 묶기
-			UserVo userVo = new UserVo(no,name,id,pw,gender);
-			//데이터 관련
+//			//vo로 묶기
+			UserVo newVo = new UserVo(no,pw,name,gender);
+//			//데이터 관련
 			UserDao userDao = new UserDao();
-			//데이터에서 메소드 쓰기
-			userDao.update(userVo);
-			//포워드
-			WebUtil.forward(request, response, "/mysite3/main");
+//			//데이터에서 메소드 쓰기
+			userDao.update(newVo);
+			
+			//세션에 값넣어주기
+			session.removeAttribute("authUser");
+			session.setAttribute("authUser", newVo);
+//			
+//			//리다이렉션
+			WebUtil.redirect(request, response, "/mysite3/main");
 		}
 		else {
 			System.out.println("action값을 다시 확인해주세요");

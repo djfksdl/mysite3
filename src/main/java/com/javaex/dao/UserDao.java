@@ -173,7 +173,7 @@ public class UserDao {//DB관련
 		return userVo;
 	}
 	//수정
-	public int update(UserVo userVo) {
+	public int update(UserVo newVo) {
 		int count=-1;
 		this.getConnection();
 		try {
@@ -181,32 +181,27 @@ public class UserDao {//DB관련
 			//sql문 준비
 			String query = "";
 			query += " update users ";
-			query += " set no=? ";
-			query += " 	  ,id =?' ";
-			query += " 	  ,password=? ";
+//			query += " set no=? ";
+//			query += " set id =? ";
+			query += " set password=? ";
 			query += " 	  ,name=? ";
 			query += " 	  ,gender=? ";
 			query += " where no=? ";
 
 			//바인딩
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, userVo.getNo());
-			pstmt.setString(2, userVo.getId() );
-			pstmt.setString(3, userVo.getPw() );
-			pstmt.setString(4, userVo.getName() );
-			pstmt.setString(5, userVo.getGender() );
-			pstmt.setInt(6, userVo.getNo() );
+//			pstmt.setInt(1, userVo.getNo());
+//			pstmt.setString(1, newVo.getId() );
+			pstmt.setString(1, newVo.getPw() );
+			pstmt.setString(2, newVo.getName() );
+			pstmt.setString(3, newVo.getGender() );
+			pstmt.setInt(4, newVo.getNo() );
 			
-			
-			
-			
-			
-			
-			UserVo userVo = new UserVo();
 			//실행
 			count = pstmt.executeUpdate() ;//select는 rs로 넘어옴
 			
 			//4.결과처리
+			System.out.println(count +"건의 데이터가 수정되었습니다.");
 			
 		}catch(SQLException e) {
 			System.out.println("error:" +e);
