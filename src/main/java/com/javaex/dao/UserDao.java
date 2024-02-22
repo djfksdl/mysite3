@@ -96,6 +96,7 @@ public class UserDao {//DB관련
 			String query = "";
 			query += " select no ";
 			query += " 		 ,name ";
+			query += " 		 ,id ";
 			query += " from users ";
 			query += " where id= ? ";
 			query += " and password=? ";
@@ -114,7 +115,10 @@ public class UserDao {//DB관련
 //				String name = rs.getString("name");
 //				UserVo userVo = new UserVo(no, name);
 				int no = rs.getInt("no");
+				String id = rs.getString("id");
 				String name = rs.getString("name");
+				
+				
 				authUser = new UserVo();//0x777- 생성자 딱 여기서만 쓸거같다. 하면 Vo에서 생성자 안만들고 set으로 집어넣는 방법이 있음!
 				authUser.setNo(no);
 				authUser.setName(name);
@@ -192,7 +196,13 @@ public class UserDao {//DB관련
 			pstmt.setString(4, userVo.getName() );
 			pstmt.setString(5, userVo.getGender() );
 			pstmt.setInt(6, userVo.getNo() );
-
+			
+			
+			
+			
+			
+			
+			UserVo userVo = new UserVo();
 			//실행
 			count = pstmt.executeUpdate() ;//select는 rs로 넘어옴
 			
