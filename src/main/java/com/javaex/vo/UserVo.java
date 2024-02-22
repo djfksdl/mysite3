@@ -12,7 +12,11 @@ public class UserVo {
 	public UserVo() {
 		super();
 	}
-	
+	public UserVo(String id, String pw) {
+		super();
+		this.id = id;
+		this.pw = pw;
+	}
 	public UserVo(String id, String pw, String name, String gender) {
 		super();
 		this.id = id;

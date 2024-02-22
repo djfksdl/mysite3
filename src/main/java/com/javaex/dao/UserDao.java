@@ -85,4 +85,123 @@ public class UserDao {//DB관련
 		this.close();
 		return count;
 	}
+	public UserVo selectUserByIdPw(UserVo userVo) {//authUser 태생은 UserVo인 자료형이다
+		UserVo authUser = null; 
+		
+		this.getConnection();
+		
+		try {
+			// 3. SQL문 준비 / 바인딩 / 실행
+			//sql문 준비
+			String query = "";
+			query += " select no ";
+			query += " 		 ,name ";
+			query += " from users ";
+			query += " where id= ? ";
+			query += " and password=? ";
+			
+			//바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, userVo.getId());
+			pstmt.setString(2, userVo.getPw() );
+
+			//실행
+			rs = pstmt.executeQuery() ;//select는 rs로 넘어옴
+			
+			//4.결과처리
+			while(rs.next()) {
+//				int no = rs.getInt("no");
+//				String name = rs.getString("name");
+//				UserVo userVo = new UserVo(no, name);
+				int no = rs.getInt("no");
+				String name = rs.getString("name");
+				authUser = new UserVo();//0x777- 생성자 딱 여기서만 쓸거같다. 하면 Vo에서 생성자 안만들고 set으로 집어넣는 방법이 있음!
+				authUser.setNo(no);
+				authUser.setName(name);
+				
+			}
+			
+		}catch(SQLException e) {
+			System.out.println("error:" +e);
+		}
+		this.close();
+		return authUser; //위에 정상적이지않으면. 데이터 없으면 while문 안들어가고 return authUser가 됨. 정상적이면 null->주소들어감
+	}
+	
+	//getUser
+	public UserVo getUser(UserVo num) {
+		UserVo userVo = null;
+		this.getConnection();
+		try {
+			// 3. SQL문 준비 / 바인딩 / 실행
+			//sql문 준비
+			String query = "";
+			query += " select no ";
+			query += " 		 ,id ";
+			query += " 		 ,password ";
+			query += " 		 ,name ";
+			query += " 		 ,gender ";
+			query += " from users ";
+			query += " where no= ? ";
+			
+			//바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, num.getNo());
+			
+
+			//실행
+			rs = pstmt.executeQuery() ;//select는 rs로 넘어옴
+			
+			//4.결과처리
+			while(rs.next()) {
+				int no = rs.getInt("no");
+				String id = rs.getString("id");
+				String pw = rs.getString("password");
+				String name = rs.getString("name");
+				String gender = rs.getString("gender");
+				userVo = new UserVo(no, id, pw, name, gender);
+			}
+			
+		}catch(SQLException e) {
+			System.out.println("error:" +e);
+		}
+		this.close();
+		return userVo;
+	}
+	//수정
+	public int update(UserVo userVo) {
+		int count=-1;
+		this.getConnection();
+		try {
+			// 3. SQL문 준비 / 바인딩 / 실행
+			//sql문 준비
+			String query = "";
+			query += " update users ";
+			query += " set no=? ";
+			query += " 	  ,id =?' ";
+			query += " 	  ,password=? ";
+			query += " 	  ,name=? ";
+			query += " 	  ,gender=? ";
+			query += " where no=? ";
+
+			//바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, userVo.getNo());
+			pstmt.setString(2, userVo.getId() );
+			pstmt.setString(3, userVo.getPw() );
+			pstmt.setString(4, userVo.getName() );
+			pstmt.setString(5, userVo.getGender() );
+			pstmt.setInt(6, userVo.getNo() );
+
+			//실행
+			count = pstmt.executeUpdate() ;//select는 rs로 넘어옴
+			
+			//4.결과처리
+			
+		}catch(SQLException e) {
+			System.out.println("error:" +e);
+		}
+		this.close();
+		return count;
+	}
 }
