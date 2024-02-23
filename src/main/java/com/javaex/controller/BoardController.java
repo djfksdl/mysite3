@@ -10,19 +10,27 @@ import javax.servlet.http.HttpServletResponse;
 import com.javaex.util.WebUtil;
 
 
-@WebServlet("/gbc")
-public class GuestbookController extends HttpServlet {
-	//필드
+@WebServlet("/board")
+public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	//메소드-일반
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//필드
+		//생성자
+		//메소드-gs
+		//메소드-일반
+
 		String action = request.getParameter("action");
-		if("dform".equals(action)) {
-			WebUtil.forward(request, response, "/WEB-INF/views/guestbook/deleteForm.jsp");
+		if("delete".equals(action)) {
+//			System.out.println("삭제버튼 누름");
 		}else {
-			WebUtil.forward(request, response, "/WEB-INF/views/guestbook/addList.jsp");
+			//메인 페이지
+			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 		}
+		
+		
+		
 	}
 
 
