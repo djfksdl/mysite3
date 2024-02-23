@@ -4,7 +4,6 @@
 <%
 	//HttpSession session = request.getSession(); //이 이름(session)으로 미리 담아놔서 이 이름으로 씀
 	UserVo authUser = (UserVo)session.getAttribute("authUser");//세션에 있는 authUser를 꺼낸다./이것저것 다 올 수 있기때문에 형변환 해줘야함.
-	//UserVo userVo = (UserVo)session.getAttribute("userVo");
 	
 %>
 

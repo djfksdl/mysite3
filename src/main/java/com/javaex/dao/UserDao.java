@@ -181,8 +181,6 @@ public class UserDao {//DB관련
 			//sql문 준비
 			String query = "";
 			query += " update users ";
-//			query += " set no=? ";
-//			query += " set id =? ";
 			query += " set password=? ";
 			query += " 	  ,name=? ";
 			query += " 	  ,gender=? ";
@@ -190,8 +188,6 @@ public class UserDao {//DB관련
 
 			//바인딩
 			pstmt = conn.prepareStatement(query);
-//			pstmt.setInt(1, userVo.getNo());
-//			pstmt.setString(1, newVo.getId() );
 			pstmt.setString(1, newVo.getPw() );
 			pstmt.setString(2, newVo.getName() );
 			pstmt.setString(3, newVo.getGender() );

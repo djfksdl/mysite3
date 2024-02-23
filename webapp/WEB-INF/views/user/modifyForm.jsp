@@ -2,10 +2,8 @@
 <%@ page import="com.javaex.vo.UserVo" %>
 
 <%
-	//HttpSession session = request.getSession(); //이 이름(session)으로 미리 담아놔서 이 이름으로 씀
-	UserVo authUser = (UserVo)session.getAttribute("authUser");//세션에 있는 authUser를 꺼낸다./이것저것 다 올 수 있기때문에 형변환 해줘야함.
-	UserVo userVo = (UserVo)session.getAttribute("userVo");
-	
+	//attribute에 있는 애를 가져온다.
+	UserVo userList = (UserVo)request.getAttribute("userVo");
 %>
     
 <!DOCTYPE html>
@@ -54,24 +52,26 @@
 				<div id="user">
 					<div id="modifyForm">
 						<form action="/mysite3/user" method="">
-							<input type="text" name="no" value="<%=authUser.getNo()%>">
-							<input type="text" name="id" value="<%=userVo.getId()%>">
+							<!-- 아이디랑 no를 input에다 숨겨서 안가져와도 되는 이유는? : 어차피 변경안할거고,no는 세션에서 계속 유지되는중. 이전값만 불러오면되기 때문! -->
+							
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 
-								<span class="text-large bold"><%= userVo.getId() %></span>
+								<span class="text-large bold"><%= userList.getId() %></span>
 							</div>
 	
 							<!-- 비밀번호 -->
 							<div class="form-group">
 								<label class="form-text" for="input-pass">패스워드</label> 
-								<input type="text" id="input-pass" name="pw" value="<%= userVo.getPw() %>" placeholder="비밀번호를 입력하세요"	>
+								<input type="text" id="input-pass" name="pw" value="<%= userList.getPw() %>" placeholder="비밀번호를 입력하세요"	>
+								<!-- 바뀐 값이 authUser에 있지만 이전 로그인값을 받는 이유는?: 수정폼에 불러와져야하기때문에 action=mform에 있는 루틴안에 있는 값을 불러와줌. auth~로 불러오면 아직 없기때문에 null값이 나옴. -->
+								<!-- 파라미터로 불러오면 안되는 이유는? 저장되어있는 값들이 세션에 있기 때문에!그리고 처음부터 파라미터로 안불러와서 쓸 수 있는 파라미터도 없었다. -->
 							</div>
 	
 							<!-- 이메일 -->
 							<div class="form-group">
 								<label class="form-text" for="input-name">이름</label> 
-								<input type="text" id="input-name" name="name" value="<%= authUser.getName() %>" placeholder="이름을 입력하세요">
+								<input type="text" id="input-name" name="name" value="<%= userList.getName() %>" placeholder="이름을 입력하세요">
 							</div>
 							<!-- //나이 -->
 							<div class="form-group">

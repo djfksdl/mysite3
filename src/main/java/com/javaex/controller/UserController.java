@@ -78,12 +78,11 @@ public class UserController extends HttpServlet {
 			WebUtil.forward(request, response, "/WEB-INF/views/user/loginForm.jsp");
 			
 		}else if("login".equals(action)) {
-//			System.out.println("login일때");
+			System.out.println("login일때");
 			
 			//파라미터에서 데이터 꺼내기
 			String id = request.getParameter("id");
 			String password = request.getParameter("pw");
-			
 			//Vo로 묶기
 			UserVo userVo = new UserVo(id , password);
 			
@@ -92,6 +91,7 @@ public class UserController extends HttpServlet {
 			
 			//Dao에서 메소드 쓰기
 			UserVo authUser= userDao.selectUserByIdPw(userVo); //나중에 수정할때 selectUser를 써야할때있음. 근데 받아오는 파라미터가 다름.그래서 이름 다르게 해야함/ 여기 userVo는 id pw가지고있음
+			System.out.println(userVo);
 			//authUser는 no, name을 가지고있음
 			
 			if(authUser !=null) {//null이 아니면 로그인 성공
@@ -99,7 +99,7 @@ public class UserController extends HttpServlet {
 				//세션에 주소 전달
 				HttpSession session = request.getSession(); //reuqest에서 주소달라고함. 
 				session.setAttribute("authUser", authUser); // (별명, 주소) /위에서 받은 주소를 찾을 별명과 함께 session에 넣어줌.
-				session.setAttribute("userVo", userVo);
+				//session.setAttribute("userVo", userVo);
 				
 				//리다이렉트
 				WebUtil.redirect(request, response, "/mysite3/main");
@@ -130,13 +130,16 @@ public class UserController extends HttpServlet {
 //			System.out.println(session);
 			UserVo num = (UserVo)session.getAttribute("authUser" ) ;
 			
-//			System.out.println(num.getNo());
+			System.out.println(num.getNo());
 			
 			//db관련
 			UserDao userDao = new UserDao();
 			
-			//db에 메소드 사용
-			userDao.getUser(num);
+			//db에 메소드 사용하고(저장) 변수에 담기
+			UserVo userVo = userDao.getUser(num);
+			
+			//받은 주소값을 Attribute에 담기
+			request.setAttribute("userVo",userVo );
 			
 			//포워드
 			WebUtil.forward(request, response, "WEB-INF/views/user/modifyForm.jsp");
@@ -148,12 +151,7 @@ public class UserController extends HttpServlet {
 			HttpSession session = request.getSession();
 //			System.out.println(session);
 			UserVo num = (UserVo)session.getAttribute("authUser") ;
-//			UserVo vo = (UserVo)session.getAttribute("userVo");
 			int no = num.getNo();
-//			String name = num.getName();
-//			String id= vo.getId();
-//			String pw = vo.getPw();
-//			String gender = vo.getGender();
 //			String id = request.getParameter("id"); 어차피 안바꾸니까
 			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
@@ -161,15 +159,17 @@ public class UserController extends HttpServlet {
 			
 //			//vo로 묶기
 			UserVo newVo = new UserVo(no,pw,name,gender);
+			
 //			//데이터 관련
 			UserDao userDao = new UserDao();
+			
 //			//데이터에서 메소드 쓰기
 			userDao.update(newVo);
 			
-			//세션에 값넣어주기
-			session.removeAttribute("authUser");
-			session.setAttribute("authUser", newVo);
-//			
+			//세션에 이름 바꿔준다
+			((UserVo)session.getAttribute("authUser")).setName(name) ;
+			
+				
 //			//리다이렉션
 			WebUtil.redirect(request, response, "/mysite3/main");
 		}
