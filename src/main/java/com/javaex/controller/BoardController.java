@@ -26,6 +26,7 @@ public class BoardController extends HttpServlet {
 //			System.out.println("삭제버튼 누름");
 		}else {
 			//메인 페이지
+			
 			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 		}
 		
