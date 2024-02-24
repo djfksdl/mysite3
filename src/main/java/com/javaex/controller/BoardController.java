@@ -22,11 +22,16 @@ public class BoardController extends HttpServlet {
 		//메소드-일반
 
 		String action = request.getParameter("action");
-		if("delete".equals(action)) {
-//			System.out.println("삭제버튼 누름");
-		}else {
-			//메인 페이지
+		if("read".equals(action)) {//게시글 눌렀을때 이동
+			//포워드
+			WebUtil.forward(request, response, "/WEB-INF/views/board/read.jsp");
+		}else if("delete".equals(action)) {
+			System.out.println("삭제버튼 누름");
 			
+		}
+		else {//메인 페이지
+			//
+			//포워드
 			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 		}
 		
