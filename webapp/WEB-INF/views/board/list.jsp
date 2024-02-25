@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.javaex.vo.BoardVo" %>
+<%@ page import="com.javaex.vo.UserVo" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,42 +9,20 @@
 <title>Insert title here</title>
 <link href="/mysite3/assets/css/mysite.css" rel="stylesheet" type="text/css">
 <link href="/mysite3/assets/css/board.css" rel="stylesheet" type="text/css">
-
+<%
+	List<BoardVo> boardList = (List<BoardVo>)request.getAttribute("boardList");
+	UserVo authUser = (UserVo)session.getAttribute("authUser");
+	
+%>
 </head>
 
 
 <body>
 	<div id="wrap">
 
-		<div id="header" class="clearfix">
-			<h1>
-				<a href="">MySite</a>
-			</h1>
-
-			<!-- 
-			<ul>
-				<li>황일영 님 안녕하세요^^</li>
-				<li><a href="" class="btn_s">로그아웃</a></li>
-				<li><a href="" class="btn_s">회원정보수정</a></li>
-			</ul>
-			-->	
-			<ul>
-				<li><a href="" class="btn_s">로그인</a></li>
-				<li><a href="" class="btn_s">회원가입</a></li>
-			</ul>
-			
-		</div>
+		<!-- header -->
+		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 		<!-- //header -->
-		
-		<div id="nav">
-			<ul class="clearfix">
-				<li><a href="">입사지원서</a></li>
-				<li><a href="">게시판</a></li>
-				<li><a href="">갤러리</a></li>
-				<li><a href="">방명록</a></li>
-			</ul>
-		</div>
-		<!-- //nav -->
 
 		<div id="container" class="clearfix">
 			<div id="aside">
@@ -88,46 +69,21 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
+							<% for(int i=0; i<boardList.size(); i++ ){ %>
 								<tr class="last">
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
+									<td><%= boardList.get(i).getNo() %></td>
+									<td class="text-left"><a href="/mysite3/board?action=read&no=<%= boardList.get(i).getNo() %>"><%= boardList.get(i).getTitle() %></a></td>
+									<td><%= boardList.get(i).getName() %></td>
+									<td><%= boardList.get(i).getHit() %></td>
+									<td><%= boardList.get(i).getReg_date() %></td>
+									<%if(authUser != null && authUser.getName().equals(boardList.get(i).getName()) ){ %>
+									<!-- 세션영역에 값이 있으면 로그인 성공한 사람 && 세션에 Name이랑 list에 name이랑 같을때-->
+									<td><a href="/mysite3/board?action=delete">[삭제]</a></td>
+									<%}else{ %>
+									<td><a href=""></a></td>
+									<%} %>
 								</tr>
+								<% } %>
 							</tbody>
 						</table>
 			
@@ -150,8 +106,11 @@
 							
 							<div class="clear"></div>
 						</div>
-						<a id="btn_write" href="">글쓰기</a>
-					
+						<%if(authUser != null){ %>
+							<a id="btn_write" href="/mysite3/board?action=writeForm">글쓰기</a>
+						<%}else{ %>
+							<!-- 로그인안했을때는 버튼 안보임 -->
+						<%} %>
 					</div>
 					<!-- //list -->
 				</div>
@@ -163,9 +122,9 @@
 		<!-- //container  -->
 		
 
-		<div id="footer">
-			Copyright ⓒ 2020 황일영. All right reserved
-		</div>
+		<!-- footer.jsp를 불러와라 -->
+		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
+		
 		<!-- //footer -->
 	</div>
 	<!-- //wrap -->

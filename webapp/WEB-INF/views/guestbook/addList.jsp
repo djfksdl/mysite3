@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.javaex.vo.GuestbookVo" %>
-<% List<GuestbookVo> guestList = (List<GuestbookVo>)request.getAttribute("guestList");  ; %>
+<% List<GuestbookVo> guestList = (List<GuestbookVo>)request.getAttribute("guestList")  ; %>
 <!DOCTYPE html>
 <html>
 <head>

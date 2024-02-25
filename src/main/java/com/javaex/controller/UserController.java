@@ -91,7 +91,7 @@ public class UserController extends HttpServlet {
 			
 			//Dao에서 메소드 쓰기
 			UserVo authUser= userDao.selectUserByIdPw(userVo); //나중에 수정할때 selectUser를 써야할때있음. 근데 받아오는 파라미터가 다름.그래서 이름 다르게 해야함/ 여기 userVo는 id pw가지고있음
-			System.out.println(userVo);
+			//System.out.println(userVo);
 			//authUser는 no, name을 가지고있음
 			
 			if(authUser !=null) {//null이 아니면 로그인 성공
@@ -103,8 +103,7 @@ public class UserController extends HttpServlet {
 				
 				//리다이렉트
 				WebUtil.redirect(request, response, "/mysite3/main");
-				System.out.println(authUser);
-				System.out.println(userVo);
+				//System.out.println(authUser);
 				
 			}else { //null이면 로그인 실패
 				System.out.println("로그인 실패");

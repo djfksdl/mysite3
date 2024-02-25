@@ -1,11 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.vo.BoardVo" %>
-<%@ page import="com.javaex.vo.UserVo" %>
-<%@ page import="java.util.List" %>
-<% BoardVo oneList = (BoardVo)request.getAttribute("oneList"); 
-	UserVo authUser = (UserVo)session.getAttribute("authUser");
-%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +8,7 @@
 <link href="/mysite3/assets/css/board.css" rel="stylesheet" type="text/css">
 
 </head>
+
 
 <body>
 	<div id="wrap">
@@ -49,12 +43,12 @@
 				<!-- //content-head -->
 	
 				<div id="board">
-					<div id="read">
+					<div id="modifyForm">
 						<form action="#" method="get">
 							<!-- 작성자 -->
 							<div class="form-group">
 								<span class="form-text">작성자</span>
-								<span class="form-value">${oneList.name}</span>
+								<span class="form-value">정우성</span>
 							</div>
 							
 							<!-- 조회수 -->
@@ -71,26 +65,32 @@
 							
 							<!-- 제목 -->
 							<div class="form-group">
-								<span class="form-text">제 목</span>
-								<span class="form-value">여기에는 글제목이 출력됩니다.</span>
+								<label class="form-text" for="txt-title">제목</label>
+								<input type="text" id="txt-title" name="title" value="여기에는 글제목이 출력됩니다.">
 							</div>
 						
+							
+						
 							<!-- 내용 -->
-							<div id="txt-content">
-								<span class="form-value" >
-									내용이 여깄습니다.
-								</span>
+							<div class="form-group">
+								<textarea id="txt-content">여기에는 본문내용이 출력됩니다.
+									여기에는 본문내용이 출력됩니다.
+									여기에는 본문내용이 출력됩니다.
+									여기에는 본문내용이 출력됩니다.
+									여기에는 본문내용이 출력됩니다.
+									여기에는 본문내용이 출력됩니다.
+									여기에는 본문내용이 출력됩니다.
+									여기에는 본문내용이 출력됩니다.
+								</textarea>
 							</div>
-							<% if(authUser != null ){ %>
-								<a id="btn_modify" href="/mysite3/board?action=modify">수정</a>
-								<a id="btn_modify" href="/mysite3/board">목록</a>
-							<%}else{ %>
-								<a id="btn_modify" href="/mysite3/board">목록</a>
-							<%} %>
+							
+							<a id="btn_cancel" href="/mysite3/board">취소</a>
+							<button id="btn_modify" type="submit" >수정</button>
+							
 						</form>
 						<!-- //form -->
 					</div>
-					<!-- //read -->
+					<!-- //modifyForm -->
 				</div>
 				<!-- //board -->
 			</div>
@@ -98,6 +98,7 @@
 
 		</div>
 		<!-- //container  -->
+
 
 		<!-- footer.jsp를 불러와라 -->
 		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
