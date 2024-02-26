@@ -29,30 +29,55 @@ public class BoardController extends HttpServlet {
 
 		String action = request.getParameter("action");
 		if("read".equals(action)) {//해당 게시글 눌렀을때 이동
-			//세션으로 no가져오기
-//			HttpSession session = request.getSession();
-//			UserVo authUser = (UserVo)session.getAttribute("authUser");
-//			int no = authUser.getNo();
-			
+			//파라미터로 값 가져오기
 			int no = Integer.parseInt(request.getParameter("no"));
 			//Db관련
 			BoardDao boardDao = new BoardDao();
 			
 			//메소드 시행(파라미터 넣어주기)-> 받아온것 변수로 넣기
-			List<BoardVo> oneList = boardDao.selectOne(no);
+			BoardVo boardVo =boardDao.selectOne(no);
 			//attribute에 넣어주기
-			request.setAttribute("oneList", oneList);
+			request.setAttribute("boardVo", boardVo);
 
 			//포워드
 			WebUtil.forward(request, response, "/WEB-INF/views/board/read.jsp");
 			System.out.println("들어갔습니다.");
 			
-		}else if("modify".equals(action)) {//수정버튼 눌렀을때
-			System.out.println("수정버튼 눌렀을때");
-			//
+		}else if("mform".equals(action)) {//수정버튼 눌렀을때 수정폼
+			System.out.println("수정버튼 눌렀을때 수정폼");
+			//파라미터 가져오기
+			int no = Integer.parseInt(request.getParameter("no"));
+			
+			//DB관련
+			BoardDao boardDao= new BoardDao();
+			
+			//메소드써주기-파라미터 넣기--이전에 만들어놓은 하나 가져오는 Vo재사용
+			BoardVo boardVo = boardDao.selectOne(no);
+			
+			//return된거 받아서 attribute에 넣기
+			request.setAttribute("boardVo", boardVo) ;
 			
 			//포워드
 			WebUtil.forward(request, response, "WEB-INF/views/board/modifyForm.jsp");
+		}else if("modify".equals(action)) {//수정
+			System.out.println("수정버튼 눌렀을때");
+			//파라미터 받아오기
+			int no = Integer.parseInt(request.getParameter("no")) ;
+			String title = request.getParameter("title");
+			String content = request.getParameter("content");
+			
+			//vo로 묶기
+			BoardVo boardVo= new BoardVo(no, title, content);
+			
+			//Db관련
+			BoardDao boardDao = new BoardDao();
+			
+			//메소드(vo)실행
+			boardDao.update(boardVo);
+			
+			//리다이렉트
+			WebUtil.redirect(request, response, "/mysite3/board");
+			
 		}
 		else if("delete".equals(action)) {
 			System.out.println("삭제버튼 누름");

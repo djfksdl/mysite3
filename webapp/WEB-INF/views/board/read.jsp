@@ -2,7 +2,7 @@
 <%@ page import="com.javaex.vo.BoardVo" %>
 <%@ page import="com.javaex.vo.UserVo" %>
 <%@ page import="java.util.List" %>
-<% BoardVo oneList = (BoardVo)request.getAttribute("oneList"); 
+<% BoardVo boardVo = (BoardVo)request.getAttribute("boardVo"); 
 	UserVo authUser = (UserVo)session.getAttribute("authUser");
 %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -50,39 +50,39 @@
 	
 				<div id="board">
 					<div id="read">
-						<form action="#" method="get">
+						<form action="/mysite3/board" method="get">
 							<!-- 작성자 -->
 							<div class="form-group">
 								<span class="form-text">작성자</span>
-								<span class="form-value">${oneList.name}</span>
+								<span class="form-value">${boardVo.name}</span>
 							</div>
 							
 							<!-- 조회수 -->
 							<div class="form-group">
 								<span class="form-text">조회수</span>
-								<span class="form-value">123</span>
+								<span class="form-value">${boardVo.hit}</span>
 							</div>
 							
 							<!-- 작성일 -->
 							<div class="form-group">
 								<span class="form-text">작성일</span>
-								<span class="form-value">2020-03-02</span>
+								<span class="form-value">${boardVo.reg_date}</span>
 							</div>
 							
 							<!-- 제목 -->
 							<div class="form-group">
 								<span class="form-text">제 목</span>
-								<span class="form-value">여기에는 글제목이 출력됩니다.</span>
+								<span class="form-value">${boardVo.title}</span>
 							</div>
 						
 							<!-- 내용 -->
 							<div id="txt-content">
 								<span class="form-value" >
-									내용이 여깄습니다.
+									${boardVo.content}
 								</span>
 							</div>
-							<% if(authUser != null ){ %>
-								<a id="btn_modify" href="/mysite3/board?action=modify">수정</a>
+							<% if(authUser != null && authUser.getNo()== boardVo.getUser_no() ) { %>
+								<a id="btn_modify" href="/mysite3/board?action=mform&no=<%= boardVo.getUser_no() %>">수정</a>
 								<a id="btn_modify" href="/mysite3/board">목록</a>
 							<%}else{ %>
 								<a id="btn_modify" href="/mysite3/board">목록</a>

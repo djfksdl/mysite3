@@ -101,15 +101,23 @@ public class BoardDao {
 		
 	}
 	//----해당 게시글 불러오기(selectOne)
-	public List<BoardVo> selectOne(int no) {
-		List<BoardVo> oneList = new ArrayList<BoardVo>();
+	public BoardVo selectOne(int no) {
+		//List<BoardVo> oneList = new ArrayList<BoardVo>();
+		BoardVo boardVo = new BoardVo();
 		this.getConnection();
 		try {
 			//sql문 준비
-			String query="select title, content, u.name, hit, b.reg_date "
-                    + "from board b "
-                    + "left join users u on b.user_no=u.no "
-                    + "where b.no=?";
+			String query= "";
+			query +="select b.no ";
+			query +=" 		,title ";
+			query +=" 		,u.name ";
+			query +=" 		,hit ";
+			query +=" 		,b.reg_date ";
+			query +=" 		,content ";
+			query +=" 		,b.user_no ";
+			query +=" from board b join users u ";
+			query +=" where b.user_no = u.no ";
+			query +=" and b.no=? ";
 			
 			//바인딩
 			pstmt = conn.prepareStatement(query);
@@ -124,17 +132,46 @@ public class BoardDao {
 				String reg_date = rs.getString("b.reg_date");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
+				int user_no= rs.getInt("b.user_no"); //이건 jsp에서 가져오려고 넣음
 				
 				//vo로 묶기
-				BoardVo boardVo = new BoardVo(name, hit, reg_date, title, content);
-				oneList.add(boardVo);
+				boardVo = new BoardVo(name, hit, reg_date, title, content, user_no);
+
 			}
 			
 		}catch(SQLException e) {
 			System.out.println("error:" +e);
 		}
 		this.close();
-		return oneList;
+		return boardVo;
+	}
+	//----update
+	public void update(BoardVo boardVo) {
+		int count =-1;
+		this.getConnection();
+		try {
+			//sql문 준비
+			String query ="";
+			query +=" update board ";
+			query +=" set title = ? ";
+			query +=" 	 ,content = ? ";
+			query +=" where no= ? ";
+			
+			//바인딩
+			pstmt= conn.prepareStatement(query);
+			pstmt.setString(1, boardVo.getTitle() );
+			pstmt.setString(2, boardVo.getContent() );
+			pstmt.setInt(3, boardVo.getNo());
+			
+			//실행
+			count = pstmt.executeUpdate();
+			
+			System.out.println(count + "건 수정되었습니다.");
+			
+		}catch(SQLException e) {
+			System.out.println("error:" +e);
+		}
+		this.close();
 	}
 	//----delete
 	public void delete(int num) {
