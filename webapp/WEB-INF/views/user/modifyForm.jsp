@@ -68,12 +68,12 @@
 								<!-- 파라미터로 불러오면 안되는 이유는? 저장되어있는 값들이 세션에 있기 때문에!그리고 처음부터 파라미터로 안불러와서 쓸 수 있는 파라미터도 없었다. -->
 							</div>
 	
-							<!-- 이메일 -->
+							<!-- 이름 -->
 							<div class="form-group">
 								<label class="form-text" for="input-name">이름</label> 
 								<input type="text" id="input-name" name="name" value="<%= userList.getName() %>" placeholder="이름을 입력하세요">
 							</div>
-							<!-- //나이 -->
+							<!-- 성별 -->
 							<div class="form-group">
 								<span class="form-text">성별</span> 
 								<label for="rdo-male">남</label> 
